@@ -7,6 +7,9 @@ It contains a very basic informational site that contains 4 pages: index, about,
 
 ## Running the server
 
-start up the server by running the command:
+
+Run `npm install` to get all packages in the project. 
+
+Then, start up the server by running the command:
 
 `node server.js` 
