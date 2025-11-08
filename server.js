@@ -1,54 +1,51 @@
 
-// pulling http to create server
-const { createServer } = require('node:http');
-
 // file system to be able to read/write to files
 const fs = require('node:fs');
 
 
+// Express handles server for HTTP req, middleware, views, and templates.
+const express = require('express');
+const app = express();
 
-// hostname and port to link page
-const hostname = '127.0.0.1';
-const port = 8080;
 
-// Create server
-const server = createServer((req, res) => {
-  
-    // Gets the URL after the hostname and ensures status code 200 on user going to initital url
-    const url = req.url
-    res.statusCode = 200;
-    // Set the header to html so user can see initial page
-    res.setHeader('Content-Type', 'text/html');
-  
-    // Root URL
-    if (url === "/") {
+
+// port to link page
+const PORT = 3000;
+
+// Create server routes
+
+
+app.get('/', (req, res) => {
     readSite('index.html', res)
-    }
-
-    // URL for about page
-    else if (url === "/about") {
-    readSite('about.html', res)
-    }
-
-    // URL for contact page
-     else if (url === "/contact") {
-    readSite('contact.html', res);
-    }
-
-
-    // In the case user types incorrect URL, pop up the error page and send a 404.
-    else {
-      res.statusCode = 404;
-      readSite('404.html', res);
-    }
-    
 })
 
-// Have the server listen for requests
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+// about page
+app.get('/about', (req, res) => {
+    readSite('about.html', res)
+})
 
+// contact page
+app.get('/contact', (req, res) => {
+    readSite('contact.html', res)
+})
+
+// Fallback
+app.use((req, res) => {
+    readSite('404.html', res)
+})
+
+ 
+
+// Have the server listen for requests
+app.listen(PORT, (error) => {
+  // This is important!
+  // Without this, any startup errors will silently fail
+  // instead of giving you a helpful error message.
+  if (error) {
+    throw error;
+  }
+  console.log(`My first Express app - listening on port ${PORT}!`);
+});
 
 
 
@@ -64,5 +61,3 @@ const readSite = (filename, res) => {
     res.end(data)
   });
 }
-
-
