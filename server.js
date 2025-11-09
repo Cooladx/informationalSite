@@ -31,6 +31,7 @@ app.get('/contact', (req, res) => {
 
 // Fallback
 app.use((req, res) => {
+    res.statusCode = 404;
     readSite('404.html', res)
 })
 
